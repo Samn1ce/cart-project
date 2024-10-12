@@ -7,6 +7,7 @@
   const foods = ref(foodData.map(food => ({ 
     ...food, 
     inCart: false,
+    isHovered: false,
   })));
 
 
@@ -46,11 +47,14 @@
               <div class="relative inline-block">
                 <img
                 @click="toggleCart(food)"
+                @mouseover="food.isHovered = true"
+                @mouseleave="food.isHovered = false"
                 class="rounded cursor-pointer hover:border-1 hover:border-orange-600"
                 :src="food.image.desktop"
                 />
                 <button
-                class="text-[12px] text-white border-gray-200 border-2 px-2 py-1 rounded-full absolute bottom-1 left-1/2 -translate-x-1/2 -mb-5 bg-orange-500 font-bold transition-all flex items-center justify-between w-32">
+                v-if="food.isHovered "
+                class="text-[12px] text-white border-gray-200 border-1 px-2 py-1 rounded-full absolute bottom-1 left-1/2 -translate-x-1/2 -mb-5 bg-orange-500 font-bold transition-all flex items-center justify-between w-32">
                   <button
                     @click="decreamentOfItems"
                     class="w-5 flex items-center justify-center h-5 border-white border-1 rounded-full"
