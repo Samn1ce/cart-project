@@ -13,47 +13,34 @@ const foods = ref(
   }))
 );
 
-// const display = ref("none")
-
 function toggleCart(food) {
   food.inCart = !food.inCart;
-  
+
   if (!food.inCart) {
-    // Check if the item is already in the cart
-    const existingItem = cartData.value.find(item => item.id === food.id);
-    if (!existingItem) {
-      // Add the item to cart with quantity 1 if it's not already there
-      food.quantity = 1; 
-      addToCart(food); 
-    }
+    addToCart(food);
+  } else {
+    food.quantity = 1
   }
-}
-
-
-// function that adds and decrease number of item added to cart
-// const numOfItems = ref(1);
+};
 
 function incrementOfItems(food) {
   food.quantity++;
-  const existingItem = cartData.value.find(cartItem => cartItem.id === food.id);
-  if (existingItem) {
-    existingItem.quantity = food.quantity; 
-  }
-};
+  updateCartItem(food);
+}
 
-function decreamentOfItems(food) {
+function decrementOfItems(food) {
   if (food.quantity > 1) {
     food.quantity--;
+    updateCartItem(food);
   }
-};
-
-function cartClick(food) {
-  decreamentOfItems(food); // Call decrement method
-  addToCart(food);    // Call addToCart method
 }
 
 // cart data/add to cart
 const cartData = ref([]); // An empty array to hold cart items
+// save cart to local storage
+function saveCartToLocalStorage() {
+  localStorage.setItem('cart', JSON.stringify(cartData.value));
+}
 
 function addToCart(item) {
   let currentCart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -79,6 +66,14 @@ function removeFromCart(item) {
   
   cartData.value = currentCart;  // Update the reactive cartData array
   localStorage.setItem('cart', JSON.stringify(currentCart));  // Save to localStorage
+}
+
+function updateCartItem(item) {
+  const cartItem = cartData.value.find(cartItem => cartItem.id === item.id);
+  if (cartItem) {
+    cartItem.quantity = item.quantity;
+    saveCartToLocalStorage();
+  }
 }
 
 function cartDisplay() {
@@ -122,7 +117,7 @@ function cartDisplay() {
                   class="text-[12px] text-white border-gray-200 border-1 px-2 py-1 rounded-full absolute bottom-1 left-1/2 -translate-x-1/2 -mb-5 bg-orange-500 font-bold transition-all flex items-center justify-between w-32"
                 >
                   <button
-                    @click="cartClick(food)"
+                    @click="decrementOfItems(food)"
                     class="w-5 flex items-center justify-center h-5 cursor-pointer border-white border-1 rounded-full"
                   >
                     <svg
@@ -235,7 +230,7 @@ function cartDisplay() {
               <!-- total order  -->
               <div class="flex justify-between items-center">
                 <p class="text-zinc-500 font-semibold">Order Total</p>
-                <p class="text-3xl font-bold">$46.50</p>
+                <p class="text-3xl font-bold">${{ parseFloat(item.price * item.quantity).toFixed(2) }}</p>
               </div>
             </div>
             <!-- confirm order button -->
