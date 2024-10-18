@@ -70,10 +70,10 @@ function removeFromCart(item) {
 
 function updateCartItem(item) {
   const cartItem = cartData.value.find(cartItem => cartItem.id === item.id);
-  if (cartItem) {
-    cartItem.quantity = item.quantity;
-    saveCartToLocalStorage();
-  }
+  // if (cartItem) {
+  //   cartItem.quantity = item.quantity;
+  //   saveCartToLocalStorage();
+  // }
 }
 
 function cartDisplay() {
@@ -226,7 +226,44 @@ function cartDisplay() {
               </div>
               <!--  -->
               <hr class="my-4" />
-              
+              <!-- 2 -->
+              <div class="flex justify-between items-center">
+                <!-- item detail -->
+                <div>
+                  <h1 class="font-semibold text-sm">{{ item.name }}</h1>
+                  <!-- price & qty detail -->
+                  <div class="flex text-12 gap-3">
+                    <p class="text-orange-700 font-bold">{{ item.quantity }}</p>
+                    <p class="text-zinc-500 font-semibold">@ ${{ parseFloat(item.price).toFixed(2) }}</p>
+                    <p class="font-semibold">${{ parseFloat(item.price * item.quantity).toFixed(2) }}</p>
+                  </div>
+                </div>
+                <!-- cancel -->
+                <button
+                  @click="removeFromCart(item)"
+                ><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg></button>
+              </div>
+              <!--  -->
+              <hr class="my-4" />
+              <!-- 3 -->
+              <div class="flex justify-between items-center">
+                <!-- item detail -->
+                <div>
+                  <h1 class="font-semibold text-sm">{{ item.name }}</h1>
+                  <!-- price & qty detail -->
+                  <div class="flex text-12 gap-3">
+                    <p class="text-orange-700 font-bold">{{ item.quantity }}</p>
+                    <p class="text-zinc-500 font-semibold">@ ${{ parseFloat(item.price).toFixed(2) }}</p>
+                    <p class="font-semibold">${{ parseFloat(item.price * item.quantity).toFixed(2) }}</p>
+                  </div>
+                </div>
+                <!-- cancel -->
+                <button
+                  @click="removeFromCart(item)"
+                ><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg></button>
+              </div>
+              <!--  -->
+              <hr class="my-4" />
               <!-- total order  -->
               <div class="flex justify-between items-center">
                 <p class="text-zinc-500 font-semibold">Order Total</p>
